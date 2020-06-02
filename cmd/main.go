@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/ProjectReferral/Get-me-in/account-api/cmd/dep"
-	"github.com/ProjectReferral/Get-me-in/account-api/configs"
-	"github.com/ProjectReferral/Get-me-in/account-api/internal/api"
-	"github.com/ProjectReferral/Get-me-in/account-api/internal/models"
-	"github.com/ProjectReferral/Get-me-in/util"
+	"github.com/Get-me-in/account-api/cmd/dep"
+	"github.com/Get-me-in/account-api/configs"
+	"github.com/Get-me-in/account-api/internal/api"
+	"github.com/Get-me-in/account-api/internal/models"
+	"github.com/Get-me-in/external/util"
 	"log"
 	"os"
 )

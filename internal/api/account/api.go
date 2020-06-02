@@ -1,7 +1,7 @@
 package account
 
 import (
-	"github.com/ProjectReferral/Get-me-in/account-api/lib/dynamodb/repo-builder"
+	"github.com/Get-me-in/account-api/lib/dynamodb/repo-builder"
 	"net/http"
 )
 

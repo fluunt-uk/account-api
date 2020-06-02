@@ -1,14 +1,15 @@
 package api
 
 import (
-	"github.com/ProjectReferral/Get-me-in/account-api/configs"
-	"github.com/ProjectReferral/Get-me-in/account-api/internal/api/account"
-	account_advert "github.com/ProjectReferral/Get-me-in/account-api/internal/api/account-advert"
-	sign_in "github.com/ProjectReferral/Get-me-in/account-api/internal/api/sign-in"
-	"github.com/ProjectReferral/Get-me-in/pkg/security"
+	"github.com/Get-me-in/account-api/configs"
+	"github.com/Get-me-in/account-api/internal/api/account"
+	account_advert "github.com/Get-me-in/account-api/internal/api/account-advert"
+	sign_in "github.com/Get-me-in/account-api/internal/api/sign-in"
+	"github.com/Get-me-in/external/pkg/security"
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"log"
+
 	"net/http"
 )
 

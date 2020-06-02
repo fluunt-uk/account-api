@@ -3,9 +3,9 @@ package rabbitmq
 import (
 	"crypto/rand"
 	"fmt"
-	"github.com/ProjectReferral/Get-me-in/account-api/configs"
-	"github.com/ProjectReferral/Get-me-in/queueing-api/client"
-	"github.com/ProjectReferral/Get-me-in/queueing-api/client/models"
+	"github.com/Get-me-in/account-api/configs"
+	"github.com/Get-me-in/queueing-api/client"
+	"github.com/Get-me-in/queueing-api/client/models"
 	"github.com/streadway/amqp"
 	"log"
 	"net/http"

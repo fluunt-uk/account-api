@@ -1,10 +1,10 @@
 package dep
 
 import (
-	"github.com/ProjectReferral/Get-me-in/account-api/lib/dynamodb/repo-builder"
-	"github.com/ProjectReferral/Get-me-in/account-api/lib/rabbitmq"
-	"github.com/ProjectReferral/Get-me-in/pkg/dynamodb"
-	"github.com/ProjectReferral/Get-me-in/queueing-api/client"
+	"github.com/Get-me-in/account-api/lib/dynamodb/repo-builder"
+	"github.com/Get-me-in/account-api/lib/rabbitmq"
+	"github.com/Get-me-in/external/pkg/dynamodb"
+	"github.com/Get-me-in/queueing-api/client"
 	"log"
 )
 

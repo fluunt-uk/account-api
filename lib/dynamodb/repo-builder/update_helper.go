@@ -1,7 +1,7 @@
 package repo_builder
 
 import (
-	"github.com/ProjectReferral/Get-me-in/account-api/internal/models"
+	"github.com/Get-me-in/account-api/internal/models"
 )
 
 func (c *AccountWrapper) UpdateValue(email string, cr *models.ChangeRequest) error{

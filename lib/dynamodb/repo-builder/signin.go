@@ -2,9 +2,9 @@ package repo_builder
 
 import (
 	"encoding/json"
-	"github.com/Get-me-in/account-api/internal"
-	"github.com/Get-me-in/account-api/internal/models"
-	"github.com/Get-me-in/external/pkg/dynamodb"
+	"gitlab.com/projectreferral/account-api/internal"
+	"gitlab.com/projectreferral/account-api/internal/models"
+	"gitlab.com/projectreferral/util/pkg/dynamodb"
 	"net/http"
 )
 

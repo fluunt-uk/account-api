@@ -3,12 +3,12 @@ package repo_builder
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Get-me-in/account-api/configs"
-	"github.com/Get-me-in/account-api/internal"
-	"github.com/Get-me-in/account-api/internal/models"
-	"github.com/Get-me-in/account-api/lib/rabbitmq"
-	"github.com/Get-me-in/external/pkg/dynamodb"
-	"github.com/Get-me-in/external/pkg/security"
+	"gitlab.com/projectreferral/account-api/configs"
+	"gitlab.com/projectreferral/account-api/internal"
+	"gitlab.com/projectreferral/account-api/internal/models"
+	"gitlab.com/projectreferral/account-api/lib/rabbitmq"
+	"gitlab.com/projectreferral/util/pkg/dynamodb"
+	"gitlab.com/projectreferral/util/pkg/security"
 	"log"
 	"net/http"
 )

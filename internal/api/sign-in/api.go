@@ -1,7 +1,7 @@
 package sign_in
 
 import (
-	"github.com/Get-me-in/account-api/lib/dynamodb/repo-builder"
+	"gitlab.com/projectreferral/account-api/lib/dynamodb/repo-builder"
 	"net/http"
 )
 

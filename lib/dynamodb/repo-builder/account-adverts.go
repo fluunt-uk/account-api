@@ -2,10 +2,10 @@ package repo_builder
 
 import (
 	"encoding/json"
-	"github.com/Get-me-in/account-api/internal"
-	"github.com/Get-me-in/account-api/internal/models"
-	"github.com/Get-me-in/external/pkg/dynamodb"
-	"github.com/Get-me-in/external/pkg/security"
+	"gitlab.com/projectreferral/account-api/internal"
+	"gitlab.com/projectreferral/account-api/internal/models"
+	"gitlab.com/projectreferral/util/pkg/dynamodb"
+	"gitlab.com/projectreferral/util/pkg/security"
 	"net/http"
 )
 type AccountAdvertWrapper struct {

@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"github.com/Get-me-in/external/pkg/dynamodb"
+	"gitlab.com/projectreferral/util/pkg/dynamodb"
 	"net/http"
 )
 

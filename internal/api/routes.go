@@ -1,11 +1,11 @@
 package api
 
 import (
-	"github.com/Get-me-in/account-api/configs"
-	"github.com/Get-me-in/account-api/internal/api/account"
-	account_advert "github.com/Get-me-in/account-api/internal/api/account-advert"
-	sign_in "github.com/Get-me-in/account-api/internal/api/sign-in"
-	"github.com/Get-me-in/external/pkg/security"
+	"gitlab.com/projectreferral/account-api/configs"
+	"gitlab.com/projectreferral/account-api/internal/api/account"
+	account_advert "gitlab.com/projectreferral/account-api/internal/api/account-advert"
+	sign_in "gitlab.com/projectreferral/account-api/internal/api/sign-in"
+	"gitlab.com/projectreferral/util/pkg/security"
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"log"

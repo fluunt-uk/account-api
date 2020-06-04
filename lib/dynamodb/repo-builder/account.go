@@ -1,14 +1,20 @@
 package repo_builder
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3"
 	"gitlab.com/projectreferral/account-api/configs"
 	"gitlab.com/projectreferral/account-api/internal"
 	"gitlab.com/projectreferral/account-api/internal/models"
 	"gitlab.com/projectreferral/account-api/lib/rabbitmq"
 	"gitlab.com/projectreferral/util/pkg/dynamodb"
 	"gitlab.com/projectreferral/util/pkg/security"
+	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -27,9 +33,100 @@ type AccountBuilder interface{
 	IsUserPremium(http.ResponseWriter, *http.Request)
 	VerifyEmail(http.ResponseWriter, *http.Request)
 	ResendVerification(http.ResponseWriter, *http.Request)
+	UploadFile(http.ResponseWriter, *http.Request)
 }
 //interface with the implemented methods will be injected in this variable
 var Account AccountBuilder
+
+func (c *AccountWrapper) UploadFile(w http.ResponseWriter, r *http.Request) {
+
+	// Limit size to 10 mb
+	_ = r.ParseMultipartForm(10 * 1024 * 1024)
+
+	file, handle, err := r.FormFile("File")
+
+	if err != nil {
+		fmt.Println(err)
+		w.WriteHeader(http.StatusBadRequest)
+	}
+	defer file.Close()
+
+	var buf bytes.Buffer
+	io.Copy(&buf, file)
+
+	i, er := ioutil.ReadAll(&buf)
+
+	if er != nil {
+		fmt.Println("failed to convert")
+	}
+
+	fmt.Println("File name:", handle.Filename)
+	fmt.Println("File size:", handle.Size)
+	fmt.Println("File type:", handle.Header.Get("Content-Type"))
+
+	// Need to move this to configs or somewhere else
+	s, err := session.NewSession(&aws.Config{Region: aws.String(configs.EU_WEST_2)})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	svc := s3.New(s)
+
+	result, err := svc.ListBuckets(nil)
+	if err != nil {
+		fmt.Println("Unable to list buckets, %v", err)
+	}
+
+	fmt.Println("Buckets:")
+
+	for _, b := range result.Buckets {
+		fmt.Printf("* %s created on %s\n",
+			aws.StringValue(b.Name), aws.TimeValue(b.CreationDate))
+	}
+
+	// Will need an if statement here for
+	s3er := AddFileToS3(s, i, handle.Filename, handle.Size)
+
+	if s3er != nil {
+		fmt.Println(s3er)
+		w.WriteHeader(http.StatusBadRequest)
+	}
+	fmt.Println("File uploaded")
+	w.WriteHeader(http.StatusCreated)
+}
+
+func AddFileToS3(s *session.Session, buffer []byte, filename string, size int64) error {
+
+	// Open the file for use
+	//file, err := os.Open(fileDir)
+	//if err != nil {
+	//	return err
+	//}
+	//defer file.Close()
+
+
+	//_, err = buffer.WriteTo(w)
+	//// Get file size and read the file content into a buffer
+	//fileInfo, _ := file.Stat()
+	//var size int64 = fileInfo.Size()
+	//buffer := make([]byte, size)
+	//file.Read(buffer)
+
+	// Config settings: this is where you choose the bucket, filename, content-type etc.
+	// of the file you're uploading.
+	worked, err := s3.New(s).PutObject(&s3.PutObjectInput{
+		Bucket:               aws.String(configs.S3_BUCKET),
+		Key:                  aws.String(filename),
+		ACL:                  aws.String("private"),
+		Body:                 bytes.NewReader(buffer),
+		ContentLength:        aws.Int64(size),
+		ContentType:          aws.String(http.DetectContentType(buffer)),
+		ContentDisposition:   aws.String("attachment"),
+		ServerSideEncryption: aws.String("AES256"),
+	})
+	fmt.Println(worked)
+	return err
+}
 
 //We check for the recaptcha response and proceed
 //Covert the response body into appropriate models

@@ -2,12 +2,12 @@ package api
 
 import (
 	"fmt"
+	"github.com/gorilla/mux"
 	"gitlab.com/projectreferral/account-api/configs"
 	"gitlab.com/projectreferral/account-api/internal/api/account"
 	account_advert "gitlab.com/projectreferral/account-api/internal/api/account-advert"
 	sign_in "gitlab.com/projectreferral/account-api/internal/api/sign-in"
 	"gitlab.com/projectreferral/util/pkg/security"
-	"github.com/gorilla/mux"
 	"io/ioutil"
 	"log"
 	"os"
@@ -20,6 +20,8 @@ func SetupEndpoints() {
 	_router := mux.NewRouter()
 
 	_router.HandleFunc("/test", account.TestFunc)
+
+	_router.HandleFunc("/upload", security.WrapHandlerWithSpecialAuth(account.UploadFile, configs.AUTH_AUTHENTICATED)).Methods("POST")
 
 	//token with correct register claim allowed
 	_router.HandleFunc("/account", security.WrapHandlerWithSpecialAuth(account.CreateUser, configs.AUTH_REGISTER)).Methods("PUT")

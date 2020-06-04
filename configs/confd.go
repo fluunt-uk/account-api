@@ -25,6 +25,7 @@ const (
 	AUTH_VERIFY        = "verify_user"
 	NO_ACCESS          = "admin_gui"
 	/*********************************************/
+	S3_BUCKET		= "docs-s3"
 )
 
 var (

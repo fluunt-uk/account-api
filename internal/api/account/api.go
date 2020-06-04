@@ -44,3 +44,7 @@ func VerifyEmail(w http.ResponseWriter, r *http.Request) {
 func ResendVerification(w http.ResponseWriter, r *http.Request) {
 	repo_builder.Account.ResendVerification(w ,r)
 }
+
+func UploadFile(w http.ResponseWriter, r *http.Request) {
+	repo_builder.Account.UploadFile(w ,r)
+}

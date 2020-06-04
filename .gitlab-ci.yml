@@ -28,7 +28,7 @@ build:
     - ls
     - git config --global url."https://projectreferral:n9ASa89aeZ7JLswBc5Do@gitlab.com".insteadOf "https://gitlab.com"
     - go mod tidy
-    - go build $CI_PROJECT_DIR/account-api/cmd/main.go
+    - go build $CI_PROJECT_DIR/cmd/main.go
     
 # deploy:
 #     stage: deploy 

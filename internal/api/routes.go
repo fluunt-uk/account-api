@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"gitlab.com/projectreferral/account-api/configs"
 	"gitlab.com/projectreferral/account-api/internal/api/account"
 	account_advert "gitlab.com/projectreferral/account-api/internal/api/account-advert"
@@ -9,6 +10,7 @@ import (
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"log"
+	"os"
 
 	"net/http"
 )
@@ -47,7 +49,14 @@ func SetupEndpoints() {
 }
 
 func displayLog(w http.ResponseWriter, r *http.Request){
-	b, _ := ioutil.ReadFile("logs/accountAPI_log.txt")
+
+	path, err := os.Getwd()
+	if err != nil {
+		log.Println(err)
+	}
+	fmt.Println(path)
+
+	b, _ := ioutil.ReadFile(path + "/logs/accountAPI_log.txt")
 
 	w.Write(b)
 }

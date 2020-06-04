@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"gitlab.com/projectreferral/account-api/cmd/dep"
 	"gitlab.com/projectreferral/account-api/configs"
 	"gitlab.com/projectreferral/account-api/internal/api"
@@ -12,7 +13,13 @@ import (
 
 func main() {
 
-	f, err := os.OpenFile("./logs/accountAPI_log.txt", os.O_WRONLY|os.O_CREATE, 0644)
+	path, err := os.Getwd()
+	if err != nil {
+		log.Println(err)
+	}
+	fmt.Println(path)
+
+	f, err := os.OpenFile(path + "/logs/accountAPI_log.txt", os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}

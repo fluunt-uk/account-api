@@ -1,3 +1,4 @@
+
 # This file is a template, and might need editing before it works on your project.
 image: golang:1.13
 
@@ -16,10 +17,10 @@ before_script:
   - ln -svf $CI_PROJECT_DIR $GOPATH/src/$REPO_NAME
   - cd $GOPATH/src/$REPO_NAME
 
-
 stages:
   - build
-  - production 
+  - deploy
+
 
 build:
   stage: build
@@ -30,10 +31,9 @@ build:
     - go mod tidy
     - go build $CI_PROJECT_DIR/cmd/main.go
 
-deploy:
-    stage: production
-    only:
-        - master  # Run this job only on changes for the master branch
+deploy_to_box:
+  stage: deploy
+  # Generates to connect to the AWS unit the SSH key.
     before_script:
     # generate ssh key
     - mkdir -p ~/.ssj
@@ -41,12 +41,12 @@ deploy:
     - chmond 600 ~/.ssh/id_rsa
     - ‘[[ -f /.dockerenv ]] && echo -e “Host *\n\tStrictHostKeyChecking no\n\n” > ~/.ssh/config’
 
-    script:
-     - bash  .gitlab-deploy-prod.sh
-
-    # environment:
-    # name: production
-    # url: http://ec2-35-179-11-178.eu-west-2.compute.amazonaws.com
-
-    when: manual
+  script:
+    - bash .gitlab-deploy-prod.sh
+  only:
+  - master
+  
+when: manual
     
+    
+

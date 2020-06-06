@@ -18,8 +18,8 @@ before_script:
 
 
 stages:
-  - production
   - build
+  - production 
 
 build:
   stage: build

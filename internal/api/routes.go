@@ -44,6 +44,7 @@ func SetupEndpoints() {
 
 	//user must be authenticated before access this endpoint
 	_router.HandleFunc("/account/advert", security.WrapHandlerWithSpecialAuth(account_advert.GetAllAdverts, configs.AUTH_AUTHENTICATED)).Methods("GET")
+	_router.HandleFunc("/account/applications", security.WrapHandlerWithSpecialAuth(account_advert.GetAllApplications, configs.AUTH_AUTHENTICATED)).Methods("GET")
 
 	_router.HandleFunc("/log", displayLog).Methods("GET")
 

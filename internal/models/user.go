@@ -18,6 +18,8 @@ type User struct {
 	Applications 	map[string]Advert 		`dynamodbav:"applications"`
 	//active paid subscription
 	ActiveSub	 	map[string]interface{}	`dynamodbav:"active_subscription"`
+	// ads posted
+	AdsPosted 		map[string]Advert		`dynamodbav:"ads_posted"`
 }
 
 type Credentials struct {
@@ -35,6 +37,7 @@ type Advert struct {
 	ValidTill   	string 					`json:"valid_till"`
 	Company     	string 					`json:"company"`
 	Description 	string 					`json:"description"`
+	Applicants		map[string]User			`json:"applicants"`
 }
 
 //used to update user details

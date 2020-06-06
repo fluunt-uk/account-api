@@ -46,6 +46,6 @@ deploy:
 
     enviroment:
     name: production
-    # url: http://ec2-35-179-11-178.eu-west-2.compute.amazonaws.com
+    url: http://ec2-35-179-11-178.eu-west-2.compute.amazonaws.com
 
     when: manual

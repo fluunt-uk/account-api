@@ -18,7 +18,7 @@ before_script:
 
 
 stages:
-  - deploy
+  - production
   - build
 
 build:
@@ -31,7 +31,7 @@ build:
     - go build $CI_PROJECT_DIR/cmd/main.go
 
 deploy:
-    stage: deploy
+    stage: production
     only:
         - master  # Run this job only on changes for the master branch
     before_script:
@@ -44,6 +44,9 @@ deploy:
     script:
      - bash  .gitlab-deploy-prod.sh
 
-    environment:
-    name: production
-    url: http://ec2-35-179-11-178.eu-west-2.compute.amazonaws.com
+    # environment:
+    # name: production
+    # url: http://ec2-35-179-11-178.eu-west-2.compute.amazonaws.com
+
+    when: manual
+    

@@ -18,9 +18,9 @@ before_script:
 
 
 stages:
-#   - deploy
+  - deploy
   - build
-  
+
 build:
   stage: build
   script:
@@ -29,8 +29,23 @@ build:
     - git config --global url."https://projectreferral:n9ASa89aeZ7JLswBc5Do@gitlab.com".insteadOf "https://gitlab.com"
     - go mod tidy
     - go build $CI_PROJECT_DIR/cmd/main.go
-    
-# deploy:
-#     stage: deploy 
-#     script: 
-        
+
+deploy:
+    stage: deploy
+    only:
+        - master  # Run this job only on changes for the master branch
+    before_script:
+    # generate ssh key
+    - mkdir -p ~/.ssj
+    - echo -e "PROD_DEPLOY_SERVER"
+    - chmond 600 ~/.ssh/id_rsa
+    - ‘[[ -f /.dockerenv ]] && echo -e “Host *\n\tStrictHostKeyChecking no\n\n” > ~/.ssh/config’
+
+    script:
+     - bash  .gitlab-deploy-prod.sh
+
+    enviroment:
+    name: production
+    # url: http://ec2-35-179-11-178.eu-west-2.compute.amazonaws.com
+
+    when: manual

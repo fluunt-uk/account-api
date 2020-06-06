@@ -36,7 +36,7 @@ deploy_to_box:
   before_script:
     # generate ssh key
     - mkdir -p ~/.ssh
-    - echo -e "PROD_DEPLOY_SERVER"
+    - echo -e "PROD_SSH_PRIVATE" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - ‘[[ -f /.dockerenv ]] && echo -e “Host *\n\tStrictHostKeyChecking no\n\n” > ~/.ssh/config’
 

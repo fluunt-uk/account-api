@@ -37,7 +37,7 @@ deploy_to_box:
     # generate ssh key
     - mkdir -p ~/.ssj
     - echo -e "PROD_DEPLOY_SERVER"
-    - chmond 600 ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
     - ‘[[ -f /.dockerenv ]] && echo -e “Host *\n\tStrictHostKeyChecking no\n\n” > ~/.ssh/config’
 
   script:

@@ -41,7 +41,7 @@ deploy_to_box:
     - ‘[[ -f /.dockerenv ]] && echo -e “Host *\n\tStrictHostKeyChecking no\n\n” > ~/.ssh/config’
 
   script:
-    - bash .gitlab-deploy-prod.sh
+    - bash gitlab-deploy-prod.sh
 #   only:
 #   - master
   

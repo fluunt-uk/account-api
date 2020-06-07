@@ -53,3 +53,7 @@ type ChangeRequest struct {
 	Type			int						`json:"type"`
 }
 
+type SSEncryption struct {
+	Key				string					`json:"key"`
+}
+

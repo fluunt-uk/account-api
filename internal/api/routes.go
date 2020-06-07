@@ -16,12 +16,14 @@ import (
 )
 
 func SetupEndpoints() {
-	
+
 	_router := mux.NewRouter()
 
 	_router.HandleFunc("/test", account.TestFunc)
 
 	_router.HandleFunc("/upload", security.WrapHandlerWithSpecialAuth(account.UploadFile, configs.AUTH_AUTHENTICATED)).Methods("POST")
+
+	_router.HandleFunc("/encrypt", security.WrapHandlerWithSpecialAuth(account.PutEncryption, configs.AUTH_AUTHENTICATED)).Methods("PUT")
 
 	//token with correct register claim allowed
 	_router.HandleFunc("/account", security.WrapHandlerWithSpecialAuth(account.CreateUser, configs.AUTH_REGISTER)).Methods("PUT")
@@ -47,6 +49,8 @@ func SetupEndpoints() {
 	_router.HandleFunc("/account/applications", security.WrapHandlerWithSpecialAuth(account_advert.GetAllApplications, configs.AUTH_AUTHENTICATED)).Methods("GET")
 
 	_router.HandleFunc("/log", displayLog).Methods("GET")
+
+	account.Init()
 
 	log.Fatal(http.ListenAndServe(configs.PORT, _router))
 }

@@ -26,7 +26,7 @@ build:
   script:
     - cd $CI_PROJECT_DIR
     - ls
-    - git config --global url.$PIPELINE_GIT_TOKEN ".insteadOf" "https://gitlab.com"  
+    - git config --global url."https://projectreferral:${CI_JOB_TOKEN}@gitlab.com/".insteadOf "https://gitlab.com/"
     - go mod tidy
     - go build $CI_PROJECT_DIR/cmd/main.go
 

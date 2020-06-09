@@ -17,7 +17,7 @@ before_script:
   - cd $GOPATH/src/$REPO_NAME
 
 stages:
-  - build
+#  - build
   - deploy
 
 
@@ -38,6 +38,8 @@ deploy_to_box:
     - mkdir -p ~/.ssh
     - echo -e "PROD_SSH_PRIVATE" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
+    - pwd
+    - ls
     - echo -e “Host *\n\tStrictHostKeyChecking no\n\n” > ~/.ssh/config
 
   script:

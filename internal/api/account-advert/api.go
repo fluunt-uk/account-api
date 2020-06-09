@@ -7,10 +7,14 @@ import (
 
 //get the email from the jwt
 //stored in the subject claim
-func GetAllAdverts(w http.ResponseWriter, r *http.Request) {
-	repo_builder.AccountAdvert.GetAllAdverts(w ,r)
+func GetRefereeAdsPosted(w http.ResponseWriter, r *http.Request) {
+	repo_builder.AccountAdvert.GetRefereeAdsPosted(w ,r)
 }
 
-func GetAllApplications(w http.ResponseWriter, r *http.Request) {
-	repo_builder.AccountAdvert.GetAllApplications(w ,r)
+func GetJobApplications(w http.ResponseWriter, r *http.Request) {
+	repo_builder.AccountAdvert.GetJobApplications(w ,r)
+}
+
+func GetAdApplicants(w http.ResponseWriter, r *http.Request) {
+	repo_builder.AccountAdvert.GetAdApplicants(w ,r)
 }

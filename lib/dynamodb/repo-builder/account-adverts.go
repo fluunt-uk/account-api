@@ -10,25 +10,26 @@ import (
 )
 type AccountAdvertWrapper struct {
 	//dynamo client
-	DC		*dynamodb.Wrapper
+	DC    *dynamodb.Wrapper
 }
 //implement only the necessary methods for each repository
 //available to be consumed by the API
 type AccountAdvertBuilder interface{
-	GetAllAdverts(w http.ResponseWriter, r *http.Request)
-	GetAllApplications(w http.ResponseWriter, r *http.Request)
+	GetRefereeAdsPosted(w http.ResponseWriter, r *http.Request)
+	GetJobApplications(w http.ResponseWriter, r *http.Request)
+	GetAdApplicants(w http.ResponseWriter, r *http.Request)
 }
 //interface with the implemented methods will be injected in this variable
 var AccountAdvert AccountAdvertBuilder
 
 //get all the adverts for a specific account
 //token validated
-func (c *AccountAdvertWrapper) GetAllAdverts(w http.ResponseWriter, r *http.Request) {
+func (c *AccountAdvertWrapper) GetRefereeAdsPosted(w http.ResponseWriter, r *http.Request) {
 	var u = models.User{}
 
 	//email parsed from the jwt
 	email := security.GetClaimsOfJWT().Subject
-	result, err := 	c.DC.GetItem(email)
+	result, err :=     c.DC.GetItem(email)
 
 	if !internal.HandleError(err, w) {
 
@@ -45,12 +46,12 @@ func (c *AccountAdvertWrapper) GetAllAdverts(w http.ResponseWriter, r *http.Requ
 }
 
 // Get all applications
-func (c *AccountAdvertWrapper) GetAllApplications(w http.ResponseWriter, r *http.Request) {
+func (c *AccountAdvertWrapper) GetJobApplications(w http.ResponseWriter, r *http.Request) {
 	var u = models.User{}
 
 	//email parsed from the jwt
 	email := security.GetClaimsOfJWT().Subject
-	result, err := 	c.DC.GetItem(email)
+	result, err :=     c.DC.GetItem(email)
 
 	if !internal.HandleError(err, w) {
 
@@ -66,21 +67,20 @@ func (c *AccountAdvertWrapper) GetAllApplications(w http.ResponseWriter, r *http
 	}
 }
 
-// Get all applicants for specific ad,
+func (c *AccountAdvertWrapper) GetAdApplicants(w http.ResponseWriter, r *http.Request) {
 
-//var ap models.Advert // id from body
-//
-//// Get id from body
-//errDecode := dynamodb.DecodeToMap(r.Body, &ap)
-//
-//if !HandleError(errDecode, w, false) {
-//
-//// Check if ad exists
-//i, err := a.DC.GetItem(ap.Uuid)
+	var ad models.Advert
+	// Get ad details from when user clicks on show applicants
+	errDecode := dynamodb.DecodeToMap(r.Body, &ad)
 
-// Can get ad id from this, getting the user would be from the function examples above
-// Can get all applicants for an ad under AdsPosted.Applicants
+	if internal.HandleError(errDecode, w) {
 
-func (c *AccountAdvertWrapper) GetAllApplicants(w http.ResponseWriter, r *http.Request) {
+		b, err := json.Marshal(ad.Applicants)
 
+		if !internal.HandleError(err, w) {
+			w.Write(b)
+			w.WriteHeader(http.StatusOK)
+		}
+	}
+	w.WriteHeader(http.StatusBadRequest)
 }

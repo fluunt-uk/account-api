@@ -7,12 +7,12 @@ import (
 	"gitlab.com/projectreferral/account-api/internal"
 	"gitlab.com/projectreferral/account-api/internal/models"
 	"gitlab.com/projectreferral/account-api/lib/rabbitmq"
+	"gitlab.com/projectreferral/account-api/lib/s3"
 	"gitlab.com/projectreferral/util/pkg/dynamodb"
 	"gitlab.com/projectreferral/util/pkg/security"
 	"log"
 	"net/http"
 )
-
 
 type AccountWrapper struct {
 	//dynamo client
@@ -21,15 +21,45 @@ type AccountWrapper struct {
 //implement only the necessary methods for each repository
 //available to be consumed by the API
 type AccountBuilder interface{
+	Init()
 	GetUser(http.ResponseWriter, *http.Request)
 	UpdateUser(http.ResponseWriter, *http.Request)
 	CreateUser(http.ResponseWriter, *http.Request)
 	IsUserPremium(http.ResponseWriter, *http.Request)
 	VerifyEmail(http.ResponseWriter, *http.Request)
 	ResendVerification(http.ResponseWriter, *http.Request)
+	UploadFile(http.ResponseWriter, *http.Request)
+	PutEncryption(w http.ResponseWriter, r *http.Request)
 }
 //interface with the implemented methods will be injected in this variable
 var Account AccountBuilder
+
+func (c *AccountWrapper) Init() {
+	s3.Init()
+}
+
+func (c *AccountWrapper) UploadFile(w http.ResponseWriter, r *http.Request) {
+	result, err := s3.UploadFile(r,"file")
+	if err != nil || result == nil {
+		w.Write([]byte(err.Error()))
+		w.WriteHeader(http.StatusBadRequest)
+	} else{
+		w.WriteHeader(http.StatusCreated)
+	}
+}
+
+func (c *AccountWrapper) PutEncryption(w http.ResponseWriter, r *http.Request) {
+	sSEncryption := models.SSEncryption{}
+	err := json.NewDecoder(r.Body).Decode(&sSEncryption)
+	if !internal.HandleError(err, w) {
+		result, err := s3.PutEncryption(sSEncryption.Key)
+		if err != nil || result == nil {
+			w.WriteHeader(http.StatusBadRequest)
+		} else{
+			w.WriteHeader(http.StatusCreated)
+		}
+	}
+}
 
 //We check for the recaptcha response and proceed
 //Covert the response body into appropriate models

@@ -15,7 +15,6 @@ before_script:
   - mkdir -p $GOPATH/src/$(dirname $REPO_NAME)
   - ln -svf $CI_PROJECT_DIR $GOPATH/src/$REPO_NAME
   - cd $GOPATH/src/$REPO_NAME
-  - go env
 
 
 stages:
@@ -27,10 +26,10 @@ build:
   script:
     - cd $CI_PROJECT_DIR
     - ls
-    - go mod download
+    - git config --global url."https://projectreferral:n9ASa89aeZ7JLswBc5Do@gitlab.com".insteadOf "https://gitlab.com"
+    - go mod tidy
     - go build $CI_PROJECT_DIR/cmd/main.go
     
 # deploy:
 #     stage: deploy 
 #     script: 
-        

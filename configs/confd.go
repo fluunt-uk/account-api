@@ -25,6 +25,11 @@ const (
 	AUTH_VERIFY        = "verify_user"
 	NO_ACCESS          = "admin_gui"
 	/*********************************************/
+	/*************** S3 configs ******************/
+	S3_BUCKET		           = "docs-s3"
+	S3_ENCRYPTION_ALGORITHM    = "AES256"
+	S3_KEY                     = "S3_KEY"
+	PART_SIZE                  = 10 * 1024 * 1024
 )
 
 var (

@@ -1,0 +1,12 @@
+2020/06/05 00:40:18 Environment: 
+2020/06/05 00:40:18 Running on :5001
+2020/06/05 00:40:18 Connecting to dynamo client
+2020/06/05 00:40:18 Injecting SignIn Repo
+2020/06/05 00:40:18 Injecting Account repo
+2020/06/05 00:40:18 Injecting Account Advert Repo
+2020/06/05 00:40:18 Injecting RabbitMQ Client
+2020/06/05 00:32:08 http: superfluous response.WriteHeader call from gitlab.com/projectreferral/account-api/lib/dynamodb/repo-builder.(*AccountWrapper).UploadFile (account.go:95)
+2020/06/05 00:29:07 http: superfluous response.WriteHeader call from gitlab.com/projectreferral/account-api/lib/dynamodb/repo-builder.(*AccountWrapper).UploadFile (account.go:95)
+2020/06/05 00:29:16 http: superfluous response.WriteHeader call from gitlab.com/projectreferral/account-api/lib/dynamodb/repo-builder.(*AccountWrapper).UploadFile (account.go:95)
+2020/06/05 00:29:21 http: superfluous response.WriteHeader call from gitlab.com/projectreferral/account-api/lib/dynamodb/repo-builder.(*AccountWrapper).UploadFile (account.go:95)
+2020/06/05 00:30:28 http: superfluous response.WriteHeader call from gitlab.com/projectreferral/account-api/lib/dynamodb/repo-builder.(*AccountWrapper).UploadFile (account.go:95)

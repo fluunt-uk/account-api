@@ -19,7 +19,7 @@ func main() {
 	}
 	fmt.Println(path)
 
-	f, err := os.OpenFile(path + "/../logs/accountAPI_log.txt", os.O_WRONLY|os.O_CREATE, 0644)
+	f, err := os.OpenFile(path + "/logs/accountAPI_log.txt", os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -14,7 +14,6 @@ import (
 	"net/http"
 )
 
-
 type AccountWrapper struct {
 	//dynamo client
 	DC		*dynamodb.Wrapper
@@ -42,6 +41,7 @@ func (c *AccountWrapper) Init() {
 func (c *AccountWrapper) UploadFile(w http.ResponseWriter, r *http.Request) {
 	result, err := s3.UploadFile(r,"file")
 	if err != nil || result == nil {
+		w.Write([]byte(err.Error()))
 		w.WriteHeader(http.StatusBadRequest)
 	} else{
 		w.WriteHeader(http.StatusCreated)
@@ -60,41 +60,6 @@ func (c *AccountWrapper) PutEncryption(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
-
-/*func AddFileToS3(s *session.Session, buffer []byte, filename string, size int64) error {
-
-	/*
-	// Open the file for use
-	//file, err := os.Open(fileDir)
-	//if err != nil {
-	//	return err
-	//}
-	//defer file.Close()
-
-
-	//_, err = buffer.WriteTo(w)
-	//// Get file size and read the file content into a buffer
-	//fileInfo, _ := file.Stat()
-	//var size int64 = fileInfo.Size()
-	//buffer := make([]byte, size)
-	//file.Read(buffer)
-
-	// Config settings: this is where you choose the bucket, filename, content-type etc.
-	// of the file you're uploading.
-	worked, err := s3.New(s).PutObject(&s3.PutObjectInput{
-		Bucket:               aws.String(configs.S3_BUCKET),
-		Key:                  aws.String(filename),
-		ACL:                  aws.String("private"),
-		Body:                 bytes.NewReader(buffer),
-		ContentLength:        aws.Int64(size),
-		ContentType:          aws.String(http.DetectContentType(buffer)),
-		ContentDisposition:   aws.String("attachment"),
-		ServerSideEncryption: aws.String("AES256"),
-	})
-	fmt.Println(worked)
-	return err
-	return nil
-}*/
 
 //We check for the recaptcha response and proceed
 //Covert the response body into appropriate models

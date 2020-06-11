@@ -1,15 +1,15 @@
 package s3
 
 import (
-    "gitlab.com/projectreferral/account-api/configs"
-    "github.com/aws/aws-sdk-go/aws"
-    "github.com/aws/aws-sdk-go/aws/awserr"
-    "github.com/aws/aws-sdk-go/aws/session"
-    "github.com/aws/aws-sdk-go/service/s3"
-    "github.com/aws/aws-sdk-go/service/s3/s3manager"
-    "log"
-    "os"
-    "net/http"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/awserr"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
+	"gitlab.com/projectreferral/account-api/configs"
+	"log"
+	"net/http"
+	"os"
 )
 
 var s3Key string
@@ -17,7 +17,7 @@ var s3Session *session.Session
 
 func Init(){
 	s3Key = os.Getenv(configs.S3_KEY)
-	if(s3Key == "") {
+	if s3Key == "" {
 		log.Println("No s3 key found")
 		os.Exit(1)
 	}
@@ -46,10 +46,14 @@ func UploadFile(r *http.Request, name string) (*s3manager.UploadOutput,error) {
 			log.Printf("file name %s size %d",filename,size)
 
 			input := &s3manager.UploadInput{
-				Bucket: aws.String(configs.S3_BUCKET),           // Bucket to be used
-				Key:    aws.String(filename),                // Name of the file to be saved
-				Body:   file,                                // File body
-				SSECustomerAlgorithm: aws.String(configs.S3_ENCRYPTION_ALGORITHM),  // Encrypt file
+				// Bucket to be used
+				Bucket: aws.String(configs.S3_BUCKET),
+				// Name of the file to be saved
+				Key:    aws.String(filename),
+				// File body
+				Body:   file,
+				// Encrypt file
+				SSECustomerAlgorithm: aws.String(configs.S3_ENCRYPTION_ALGORITHM),
 				SSECustomerKey : aws.String(s3Key),
 			}
 			uploader := s3manager.NewUploader(s3Session)

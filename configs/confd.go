@@ -30,6 +30,11 @@ const (
 	S3_ENCRYPTION_ALGORITHM    = "AES256"
 	S3_KEY                     = "S3_KEY"
 	PART_SIZE                  = 10 * 1024 * 1024
+	/*****************************************************************/
+	/*************************** S3 configs **************************/
+	RECAPTCHA_VERIFY = "https://www.google.com/recaptcha/api/siteverify"
+	RECAPTCHA_SECRET = "6LcbrKIZAAAAACoS7IHx5KZfhkk3T1tXBhcIGf6W"
+	/*****************************************************************/
 )
 
 var (

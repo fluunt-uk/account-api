@@ -80,15 +80,14 @@ func (c *AccountWrapper) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	u.AccessCode = rabbitmq.NewUUID()
 
-	dynamoAttr, errDecode := dynamodb.DecodeToDynamoAttribute(body, &u)
-
 	h := sha1.New()
 	h.Write([]byte(u.Email))
 	sha1Hash := "a" + hex.EncodeToString(h.Sum(nil))
-	
+
 	// Hashed email
 	u.Uuid = sha1Hash
 
+	dynamoAttr, errDecode := dynamodb.DecodeToDynamoAttribute(body, &u)
 	dynamodb.AddEmptyCollection(dynamoAttr, configs.ACTIVE_SUB)
 	dynamodb.AddEmptyCollection(dynamoAttr, configs.APPLICATIONS)
 

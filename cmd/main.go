@@ -12,8 +12,7 @@ import (
 )
 
 func main() {
-
-	path, err := os.Getwd()
+	path, err := os.UserHomeDir()
 	if err != nil {
 		log.Println(err)
 	}

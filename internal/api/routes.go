@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"github.com/gorilla/mux"
 	"gitlab.com/projectreferral/account-api/configs"
 	"gitlab.com/projectreferral/account-api/internal/api/account"
@@ -10,8 +9,6 @@ import (
 	"gitlab.com/projectreferral/util/pkg/security"
 	"io/ioutil"
 	"log"
-	"os"
-
 	"net/http"
 )
 

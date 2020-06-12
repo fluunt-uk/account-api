@@ -58,13 +58,7 @@ func SetupEndpoints() {
 
 func displayLog(w http.ResponseWriter, r *http.Request){
 
-	path, err := os.Getwd()
-	if err != nil {
-		log.Println(err)
-	}
-	fmt.Println(path)
-
-	b, _ := ioutil.ReadFile(path + "/logs/accountAPI_log.txt")
+	b, _ := ioutil.ReadFile("~/logs/accountAPI_log.txt")
 
 	w.Write(b)
 }

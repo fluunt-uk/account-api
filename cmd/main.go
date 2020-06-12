@@ -13,13 +13,7 @@ import (
 
 func main() {
 
-	path, err := os.Getwd()
-	if err != nil {
-		log.Println(err)
-	}
-	fmt.Println(path)
-
-	f, err := os.OpenFile(path + "/logs/accountAPI_log.txt", os.O_WRONLY|os.O_CREATE, 0644)
+	f, err := os.OpenFile("~"/logs/accountAPI_log.txt", os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	aws_dynamo "github.com/aws/aws-sdk-go/service/dynamodb"
 	"gitlab.com/projectreferral/account-api/configs"
 	"gitlab.com/projectreferral/account-api/internal"
 	"gitlab.com/projectreferral/account-api/internal/models"
@@ -80,16 +81,15 @@ func (c *AccountWrapper) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	u.AccessCode = rabbitmq.NewUUID()
 
+	dynamoAttr, errDecode := dynamodb.DecodeToDynamoAttribute(body, &u)
+
 	h := sha1.New()
 	h.Write([]byte(u.Email))
-	sha1Hash := "a" + hex.EncodeToString(h.Sum(nil))
+	sha1Hash := "A" + hex.EncodeToString(h.Sum(nil))
 
-	// Hashed email
-	u.Uuid = sha1Hash
-
-	dynamoAttr, errDecode := dynamodb.DecodeToDynamoAttribute(body, &u)
 	dynamodb.AddEmptyCollection(dynamoAttr, configs.ACTIVE_SUB)
 	dynamodb.AddEmptyCollection(dynamoAttr, configs.APPLICATIONS)
+	modifySAtrrValue(dynamoAttr, "id", &sha1Hash)
 
 	if !internal.HandleError(errDecode, w) {
 		err := 	c.DC.CreateItem(dynamoAttr)
@@ -237,4 +237,10 @@ func (c *AccountWrapper) ResendVerification(w http.ResponseWriter, r *http.Reque
 			go rabbitmq.BroadcastUserCreatedEvent(b)
 		}
 	}
+}
+
+func modifySAtrrValue(av map[string]*aws_dynamo.AttributeValue, k string, v *string){
+
+	av[k].NULL = nil
+	av[k].S = v
 }

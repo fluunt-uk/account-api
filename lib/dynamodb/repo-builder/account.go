@@ -107,8 +107,8 @@ func (c *AccountWrapper) GetUser(w http.ResponseWriter, r *http.Request) {
 	var u models.User
 
 	//email parsed from the jwt
-	//email := security.GetClaimsOfJWT().Subject
-	result, err := c.DC.GetItem("lunos4@gmail.com")
+	email := security.GetClaimsOfJWT().Subject
+	result, err := c.DC.GetItem(email)
 
 	if !internal.HandleError(err, w) {
 		dynamodb.Unmarshal(result, &u)

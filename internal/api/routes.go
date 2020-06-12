@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 )
 
 func SetupEndpoints() {
@@ -54,8 +55,9 @@ func SetupEndpoints() {
 }
 
 func displayLog(w http.ResponseWriter, r *http.Request){
+	home, _ := os.UserHomeDir()
 
-	b, _ := ioutil.ReadFile("~/logs/accountAPI_log.txt")
+	b, _ := ioutil.ReadFile(home + "/logs/accountAPI_log.txt")
 
 	w.Write(b)
 }

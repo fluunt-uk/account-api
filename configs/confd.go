@@ -2,7 +2,7 @@ package configs
 
 const (
 	PORT = ":5001"
-
+	LOG_PATH         = "../logs/accountAPI_log.txt"
 	/************** DynamoDB configs *************/
 	EU_WEST_2         = "eu-west-2"
 	UNIQUE_IDENTIFIER = "email"

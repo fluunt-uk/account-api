@@ -13,6 +13,6 @@ array=(${string//,/ })
 # Careful with the ; https://stackoverflow.com/a/20666248/1057052
 for i in "${!array[@]}"; do
   echo "Deploy project on server ${array[i]}"
-ssh ubuntu@${array[i]} "cd account-api/cmd && git pull && nohup go run main.go >> nohup.out 2>&1 &"
+ssh ubuntu@${array[i]} "nohup go run main.go >> nohup.out 2>&1 &"
 
 done

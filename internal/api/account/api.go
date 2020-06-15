@@ -54,6 +54,10 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 	repo_builder.Account.UploadFile(w ,r)
 }
 
+func DownloadFile(w http.ResponseWriter, r *http.Request) {
+	repo_builder.Account.DownloadFile(w ,r)
+}
+
 func PutEncryption(w http.ResponseWriter, r *http.Request) {
 	repo_builder.Account.PutEncryption(w, r)
 }

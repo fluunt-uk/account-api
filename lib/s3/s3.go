@@ -75,6 +75,30 @@ func UploadFile(r *http.Request, name string) (*s3manager.UploadOutput,error) {
 	return nil, sizeErr
 }
 
+func DownloadFile(name string) (*os.File,int64,error) {
+	file, fErr := os.Create(configs.S3_DOWNLOAD_LOCATION)
+	if !HandleError(fErr) && file == nil {
+		log.Println("error creating file")
+		return nil, -1, nil
+	}
+
+	defer file.Close()
+
+	downloader := s3manager.NewDownloader(s3Session)
+	size, err := downloader.Download(file, &s3.GetObjectInput{
+		Bucket: aws.String(configs.S3_BUCKET),
+		Key:    aws.String(name),
+		SSECustomerAlgorithm: aws.String(configs.S3_ENCRYPTION_ALGORITHM),
+		SSECustomerKey : aws.String(s3Key),
+
+	})
+	if !HandleError(err) {
+		return file, size, err
+	}
+
+	return file, size, nil
+}
+
 //function for putting KMS key
 func PutEncryption(key string) (*s3.PutBucketEncryptionOutput,error) {
 	defEnc := &s3.ServerSideEncryptionByDefault{KMSMasterKeyID: aws.String(key), SSEAlgorithm: aws.String(configs.S3_ENCRYPTION_ALGORITHM)}

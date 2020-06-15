@@ -14,6 +14,8 @@ import (
 	"net/http"
 )
 
+var FILE_PARAM = "file"
+
 type AccountWrapper struct {
 	//dynamo client
 	DC		*dynamodb.Wrapper
@@ -29,6 +31,7 @@ type AccountBuilder interface{
 	VerifyEmail(http.ResponseWriter, *http.Request)
 	ResendVerification(http.ResponseWriter, *http.Request)
 	UploadFile(http.ResponseWriter, *http.Request)
+	DownloadFile(http.ResponseWriter, *http.Request)
 	PutEncryption(w http.ResponseWriter, r *http.Request)
 }
 //interface with the implemented methods will be injected in this variable
@@ -39,11 +42,33 @@ func (c *AccountWrapper) Init() {
 }
 
 func (c *AccountWrapper) UploadFile(w http.ResponseWriter, r *http.Request) {
-	result, err := s3.UploadFile(r,"file")
+	result, err := s3.UploadFile(r,FILE_PARAM)
 	if err != nil || result == nil {
-		w.Write([]byte(err.Error()))
+		if err != nil {
+			log.Println([]byte(err.Error()))
+		}
 		w.WriteHeader(http.StatusBadRequest)
 	} else{
+		w.WriteHeader(http.StatusCreated)
+	}
+}
+
+func (c *AccountWrapper) DownloadFile(w http.ResponseWriter, r *http.Request) {
+	values, ok := r.URL.Query()[FILE_PARAM]
+
+	if !ok || len(values[0]) < 1 {
+		w.WriteHeader(http.StatusBadRequest)
+	}
+
+	file, size, err := s3.DownloadFile(values[0])
+	if err != nil || file == nil {
+		if err != nil {
+			log.Println([]byte(err.Error()))
+		}
+		w.WriteHeader(http.StatusBadRequest)
+	} else{
+		log.Printf("file: %+v", file)
+		log.Printf("bytes: %d", size)
 		w.WriteHeader(http.StatusCreated)
 	}
 }
@@ -83,7 +108,7 @@ func (c *AccountWrapper) CreateUser(w http.ResponseWriter, r *http.Request) {
 	dynamodb.AddEmptyCollection(dynamoAttr, configs.APPLICATIONS)
 
 	if !internal.HandleError(errDecode, w) {
-		err := 	c.DC.CreateItem(dynamoAttr)
+		err :=	c.DC.CreateItem(dynamoAttr)
 
 		if !internal.HandleError(err, w) {
 

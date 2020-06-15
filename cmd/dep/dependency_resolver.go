@@ -4,7 +4,7 @@ import (
 	"gitlab.com/projectreferral/account-api/lib/dynamodb/repo-builder"
 	"gitlab.com/projectreferral/account-api/lib/rabbitmq"
 	"gitlab.com/projectreferral/util/pkg/dynamodb"
-	"gitlab.com/projectreferral/queueing-api/client"
+	"gitlab.com/projectreferral/util/client"
 	"log"
 )
 

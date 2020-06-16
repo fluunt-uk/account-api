@@ -76,7 +76,7 @@ func UploadFile(r *http.Request, name string) (*s3manager.UploadOutput,error) {
 }
 
 func DownloadFile(name string) (*os.File,int64,error) {
-	file, fErr := os.Create(configs.S3_DOWNLOAD_LOCATION)
+	file, fErr := os.Create(configs.S3_DOWNLOAD_LOCATION + name)
 	if !HandleError(fErr) && file == nil {
 		log.Println("error creating file")
 		return nil, -1, nil

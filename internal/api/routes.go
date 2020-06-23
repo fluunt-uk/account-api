@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"github.com/gorilla/mux"
 	"gitlab.com/projectreferral/account-api/configs"
 	"gitlab.com/projectreferral/account-api/internal/api/account"
@@ -10,7 +11,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"fmt"
 )
 
 func SetupEndpoints() {

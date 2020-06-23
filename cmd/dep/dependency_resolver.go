@@ -3,8 +3,8 @@ package dep
 import (
 	"gitlab.com/projectreferral/account-api/lib/dynamodb/repo-builder"
 	"gitlab.com/projectreferral/account-api/lib/rabbitmq"
-	"gitlab.com/projectreferral/util/pkg/dynamodb"
 	"gitlab.com/projectreferral/util/client"
+	"gitlab.com/projectreferral/util/pkg/dynamodb"
 	"log"
 )
 

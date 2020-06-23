@@ -3,10 +3,10 @@ package rabbitmq
 import (
 	"crypto/rand"
 	"fmt"
+	"github.com/streadway/amqp"
 	"gitlab.com/projectreferral/account-api/configs"
 	"gitlab.com/projectreferral/util/client"
 	"gitlab.com/projectreferral/util/client/models"
-	"github.com/streadway/amqp"
 	"log"
 	"net/http"
 )

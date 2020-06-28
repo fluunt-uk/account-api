@@ -1,8 +1,9 @@
-2020/06/12 21:34:14 Environment: DEV
-2020/06/12 21:34:14 Running on :5001
-2020/06/12 21:34:14 Connecting to dynamo client
-2020/06/12 21:34:14 Injecting SignIn Repo
-2020/06/12 21:34:14 Injecting Account repo
-2020/06/12 21:34:14 Injecting Account Advert Repo
-2020/06/12 21:34:14 Injecting RabbitMQ Client
-2020/06/12 21:34:14 Session Initiated
+2020/06/27 18:56:17 Environment: de1v
+2020/06/27 18:56:17 Running on :5001
+2020/06/27 18:56:17 Connecting to dynamo client
+2020/06/27 18:56:17 Injecting SignIn Repo
+2020/06/27 18:56:17 Injecting Account repo
+2020/06/27 18:56:17 Injecting Account Advert Repo
+2020/06/27 18:56:17 Injecting RabbitMQ Client
+2020/06/27 18:56:17 No s3 key found
+d

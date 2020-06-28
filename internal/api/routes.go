@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 	"gitlab.com/projectreferral/account-api/configs"
 	"gitlab.com/projectreferral/account-api/internal/api/account"
 	account_advert "gitlab.com/projectreferral/account-api/internal/api/account-advert"
@@ -51,7 +52,17 @@ func SetupEndpoints() {
 
 	account.Init()
 
-	log.Fatal(http.ListenAndServe(configs.PORT, _router))
+	c := cors.New(cors.Options{
+		AllowedMethods: []string{"POST"},
+		AllowedOrigins: []string{"*"},
+		AllowCredentials: true,
+		AllowedHeaders: []string{"g-recaptcha-response", "Authorization", "Content-Type","Origin","Accept", "Accept-Encoding", "Accept-Language", "Host", "Connection", "Referer", "Sec-Fetch-Mode", "User-Agent", "Access-Control-Request-Headers", "Access-Control-Request-Method: "},
+		OptionsPassthrough: true,
+	})
+
+	handler := c.Handler(_router)
+
+	log.Fatal(http.ListenAndServe(configs.PORT, handler))
 }
 
 func displayLog(w http.ResponseWriter, r *http.Request){

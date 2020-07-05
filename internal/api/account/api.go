@@ -6,9 +6,14 @@ import (
 )
 
 func TestFunc(w http.ResponseWriter, r *http.Request) {
-    	w.WriteHeader(http.StatusOK)
-    	CreateUser(w,r)
+	w.WriteHeader(http.StatusOK)
+	CreateUser(w,r)
 }
+
+func Init() {
+	repo_builder.Account.Init()
+}
+
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	repo_builder.Account.CreateUser(w, r)
@@ -43,4 +48,16 @@ func VerifyEmail(w http.ResponseWriter, r *http.Request) {
 
 func ResendVerification(w http.ResponseWriter, r *http.Request) {
 	repo_builder.Account.ResendVerification(w ,r)
+}
+
+func UploadFile(w http.ResponseWriter, r *http.Request) {
+	repo_builder.Account.UploadFile(w ,r)
+}
+
+func DownloadFile(w http.ResponseWriter, r *http.Request) {
+	repo_builder.Account.DownloadFile(w ,r)
+}
+
+func PutEncryption(w http.ResponseWriter, r *http.Request) {
+	repo_builder.Account.PutEncryption(w, r)
 }

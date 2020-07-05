@@ -1,18 +1,23 @@
 package repo_builder
 
 import (
+	"crypto/sha1"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	aws_dynamo "github.com/aws/aws-sdk-go/service/dynamodb"
 	"gitlab.com/projectreferral/account-api/configs"
 	"gitlab.com/projectreferral/account-api/internal"
 	"gitlab.com/projectreferral/account-api/internal/models"
 	"gitlab.com/projectreferral/account-api/lib/rabbitmq"
+	"gitlab.com/projectreferral/account-api/lib/s3"
 	"gitlab.com/projectreferral/util/pkg/dynamodb"
 	"gitlab.com/projectreferral/util/pkg/security"
 	"log"
 	"net/http"
 )
 
+var FILE_PARAM = "file"
 
 type AccountWrapper struct {
 	//dynamo client
@@ -21,15 +26,68 @@ type AccountWrapper struct {
 //implement only the necessary methods for each repository
 //available to be consumed by the API
 type AccountBuilder interface{
+	Init()
 	GetUser(http.ResponseWriter, *http.Request)
 	UpdateUser(http.ResponseWriter, *http.Request)
 	CreateUser(http.ResponseWriter, *http.Request)
 	IsUserPremium(http.ResponseWriter, *http.Request)
 	VerifyEmail(http.ResponseWriter, *http.Request)
 	ResendVerification(http.ResponseWriter, *http.Request)
+	UploadFile(http.ResponseWriter, *http.Request)
+	DownloadFile(http.ResponseWriter, *http.Request)
+	PutEncryption(w http.ResponseWriter, r *http.Request)
 }
 //interface with the implemented methods will be injected in this variable
 var Account AccountBuilder
+
+func (c *AccountWrapper) Init() {
+	s3.Init()
+}
+
+func (c *AccountWrapper) UploadFile(w http.ResponseWriter, r *http.Request) {
+	result, err := s3.UploadFile(r,FILE_PARAM)
+	if err != nil || result == nil {
+		if err != nil {
+			log.Println([]byte(err.Error()))
+		}
+		w.WriteHeader(http.StatusBadRequest)
+	} else{
+		w.WriteHeader(http.StatusCreated)
+	}
+}
+
+func (c *AccountWrapper) DownloadFile(w http.ResponseWriter, r *http.Request) {
+	values, ok := r.URL.Query()[FILE_PARAM]
+
+	if !ok || len(values[0]) < 1 {
+		w.WriteHeader(http.StatusBadRequest)
+	}
+
+	file, size, err := s3.DownloadFile(values[0])
+	if err != nil || file == nil {
+		if err != nil {
+			log.Println([]byte(err.Error()))
+		}
+		w.WriteHeader(http.StatusBadRequest)
+	} else{
+		log.Printf("file: %+v", file)
+		log.Printf("bytes: %d", size)
+		w.WriteHeader(http.StatusCreated)
+	}
+}
+
+func (c *AccountWrapper) PutEncryption(w http.ResponseWriter, r *http.Request) {
+	sSEncryption := models.SSEncryption{}
+	err := json.NewDecoder(r.Body).Decode(&sSEncryption)
+	if !internal.HandleError(err, w) {
+		result, err := s3.PutEncryption(sSEncryption.Key)
+		if err != nil || result == nil {
+			w.WriteHeader(http.StatusBadRequest)
+		} else{
+			w.WriteHeader(http.StatusCreated)
+		}
+	}
+}
 
 //We check for the recaptcha response and proceed
 //Covert the response body into appropriate models
@@ -49,11 +107,17 @@ func (c *AccountWrapper) CreateUser(w http.ResponseWriter, r *http.Request) {
 	u.AccessCode = rabbitmq.NewUUID()
 
 	dynamoAttr, errDecode := dynamodb.DecodeToDynamoAttribute(body, &u)
+
+	h := sha1.New()
+	h.Write([]byte(u.Email))
+	sha1Hash := "A" + hex.EncodeToString(h.Sum(nil))
+
 	dynamodb.AddEmptyCollection(dynamoAttr, configs.ACTIVE_SUB)
 	dynamodb.AddEmptyCollection(dynamoAttr, configs.APPLICATIONS)
+	modifySAtrrValue(dynamoAttr, "id", &sha1Hash)
 
 	if !internal.HandleError(errDecode, w) {
-		err := 	c.DC.CreateItem(dynamoAttr)
+		err :=	c.DC.CreateItem(dynamoAttr)
 
 		if !internal.HandleError(err, w) {
 
@@ -77,8 +141,8 @@ func (c *AccountWrapper) GetUser(w http.ResponseWriter, r *http.Request) {
 	var u models.User
 
 	//email parsed from the jwt
-	//email := security.GetClaimsOfJWT().Subject
-	result, err := c.DC.GetItem("lunos4@gmail.com")
+	email := security.GetClaimsOfJWT().Subject
+	result, err := c.DC.GetItem(email)
 
 	if !internal.HandleError(err, w) {
 		dynamodb.Unmarshal(result, &u)
@@ -198,4 +262,10 @@ func (c *AccountWrapper) ResendVerification(w http.ResponseWriter, r *http.Reque
 			go rabbitmq.BroadcastUserCreatedEvent(b)
 		}
 	}
+}
+
+func modifySAtrrValue(av map[string]*aws_dynamo.AttributeValue, k string, v *string){
+
+	av[k].NULL = nil
+	av[k].S = v
 }

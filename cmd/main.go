@@ -11,8 +11,7 @@ import (
 )
 
 func main() {
-
-	f, err := os.OpenFile("logs/accountAPI_log.txt", os.O_WRONLY|os.O_CREATE, 0644)
+	f, err := os.OpenFile(configs.LOG_PATH, os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}

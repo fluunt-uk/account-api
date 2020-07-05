@@ -3,7 +3,7 @@ package models
 //'json:' is the value that will be picked up from the JSON body
 //JSON must contain the value after 'json:...'  instead of the attribute name
 type User struct {
-	Uuid       		string 					`json:"id"`
+	Uuid       		string 					`dynamodbav:"id"`
 	Firstname  		string 					`json:"first_name"`
 	Surname    		string 					`json:"surname"`
 	Email      		string 					`json:"email"`

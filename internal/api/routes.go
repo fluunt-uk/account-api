@@ -21,7 +21,7 @@ func SetupEndpoints() {
 	_router.HandleFunc("/test", account.TestFunc)
 
 	_router.HandleFunc("/upload", security.WrapHandlerWithSpecialAuth(account.UploadFile, configs.AUTH_AUTHENTICATED)).Methods("POST", "OPTIONS")
-
+	_router.HandleFunc("/download", security.WrapHandlerWithSpecialAuth(account.DownloadFile, configs.AUTH_AUTHENTICATED)).Methods("GET", "OPTIONS")
 	_router.HandleFunc("/encrypt", security.WrapHandlerWithSpecialAuth(account.PutEncryption, configs.AUTH_AUTHENTICATED)).Methods("PUT", "OPTIONS")
 
 	//token with correct register claim allowed

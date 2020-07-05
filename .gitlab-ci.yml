@@ -17,10 +17,11 @@ before_script:
   - cd $GOPATH/src/$REPO_NAME
 
 stages:
+  - build
   - deploy
 
 
-build:
+build_only:
   stage: build
   script:
     - cd $CI_PROJECT_DIR

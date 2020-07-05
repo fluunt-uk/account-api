@@ -17,7 +17,6 @@ before_script:
   - cd $GOPATH/src/$REPO_NAME
 
 stages:
-  - build
   - deploy
 
 
@@ -46,8 +45,8 @@ deploy_to_box:
 
   script:
     - bash gitlab-deploy-prod.sh
-   only:
-   - master
+  only:
+  - master
   
   when: manual
     

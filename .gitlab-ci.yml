@@ -17,17 +17,18 @@ before_script:
   - cd $GOPATH/src/$REPO_NAME
 
 stages:
+  - build
   - deploy
 
 
-#build:
- # stage: build
-  #script:
-   # - cd $CI_PROJECT_DIR
-#    - ls
- #   - git config --global url."https://projectreferral:${CI_JOB_TOKEN}@gitlab.com/".insteadOf "https://gitlab.com/"
-  #  - go mod tidy
-   # - go build $CI_PROJECT_DIR/cmd/main.go
+build_only:
+  stage: build
+  script:
+    - cd $CI_PROJECT_DIR
+    - ls
+    - git config --global url."https://projectreferral:${CI_JOB_TOKEN}@gitlab.com/".insteadOf "https://gitlab.com/"
+    - go mod tidy
+    - go build $CI_PROJECT_DIR/cmd/main.go
 
 deploy_to_box:
   stage: deploy
@@ -45,8 +46,7 @@ deploy_to_box:
 
   script:
     - bash gitlab-deploy-prod.sh
-#   only:
-#   - master
+  only:
+  - master
   
   when: manual
-    

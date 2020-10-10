@@ -5,6 +5,7 @@ import (
 	"gitlab.com/projectreferral/account-api/configs"
 	"gitlab.com/projectreferral/account-api/internal/api"
 	"gitlab.com/projectreferral/account-api/internal/models"
+	docbucket "gitlab.com/projectreferral/util/client/s3/models"
 	"gitlab.com/projectreferral/util/util"
 	"log"
 	"os"
@@ -29,6 +30,14 @@ func main() {
 		GenericModel: models.User{},
 		BrokerUrl:    configs.QAPI_URL,
 		Port:		  configs.PORT,
+		S3Config:     &docbucket.S3Configs{
+			Region:              configs.EU_WEST_2,
+			Key:                 os.Getenv(configs.S3_KEY),
+			DownloadLocation:    configs.S3_DOWNLOAD_LOCATION,
+			Bucket:              configs.S3_BUCKET,
+			EncryptionAlgorithm: configs.S3_ENCRYPTION_ALGORITHM,
+			PartSize:            configs.PART_SIZE,
+		},
 	})
 
 	api.SetupEndpoints()

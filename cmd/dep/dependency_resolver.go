@@ -3,7 +3,10 @@ package dep
 import (
 	"gitlab.com/projectreferral/account-api/lib/dynamodb/repo-builder"
 	"gitlab.com/projectreferral/account-api/lib/rabbitmq"
-	"gitlab.com/projectreferral/util/client"
+	s3 "gitlab.com/projectreferral/account-api/lib/s3"
+	rabbit "gitlab.com/projectreferral/util/client/rabbitmq"
+	utils3 "gitlab.com/projectreferral/util/client/s3"
+
 	"gitlab.com/projectreferral/util/pkg/dynamodb"
 	"log"
 )
@@ -13,7 +16,8 @@ import (
 type ConfigBuilder interface{
 	LoadEnvConfigs()
 	LoadDynamoDBConfigs() *dynamodb.Wrapper
-	LoadRabbitMQConfigs() *client.DefaultQueueClient
+	LoadRabbitMQConfigs() *rabbit.DefaultQueueClient
+	LoadS3BucketConfigs() *utils3.DefaultBucketClient
 }
 
 //internal specific configs are loaded at runtime
@@ -48,8 +52,10 @@ func Inject(builder ConfigBuilder) {
 	//dependency injection to our resource
 	//we inject the rabbitmq client
 	rabbitMQClient := builder.LoadRabbitMQConfigs()
+	S3BucketClient := builder.LoadS3BucketConfigs()
 
 	LoadRabbitMQClient(rabbitMQClient)
+	LoadS3BucketClient(S3BucketClient)
 }
 
 //variable injected with the interface methods
@@ -68,8 +74,12 @@ func LoadSignInRepo (r repo_builder.SignInBuilder){
 	repo_builder.SignIn = r
 }
 
-func LoadRabbitMQClient(c client.QueueClient){
+func LoadRabbitMQClient(c rabbit.QueueClient){
 	log.Println("Injecting RabbitMQ Client")
 	rabbitmq.Client = c
 }
 
+func LoadS3BucketClient(c utils3.Client) {
+	log.Println("Injecting S3 Bucket Client")
+	s3.C = c
+}

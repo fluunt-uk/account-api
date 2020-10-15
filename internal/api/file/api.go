@@ -42,7 +42,9 @@ func Download(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Printf("file: %+v", file.Stat())
+	s, _ := file.Stat()
+
+	log.Printf("file: %+v", s)
 	w.WriteHeader(http.StatusCreated)
 }
 

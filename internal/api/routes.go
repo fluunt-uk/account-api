@@ -7,6 +7,7 @@ import (
 	"gitlab.com/projectreferral/account-api/configs"
 	"gitlab.com/projectreferral/account-api/internal/api/account"
 	account_advert "gitlab.com/projectreferral/account-api/internal/api/account-advert"
+	"gitlab.com/projectreferral/account-api/internal/api/file"
 	sign_in "gitlab.com/projectreferral/account-api/internal/api/sign-in"
 	"gitlab.com/projectreferral/util/pkg/security"
 	"io/ioutil"
@@ -20,9 +21,9 @@ func SetupEndpoints() {
 
 	_router.HandleFunc("/test", account.TestFunc)
 
-	_router.HandleFunc("/upload", security.WrapHandlerWithSpecialAuth(account.UploadFile, configs.AUTH_AUTHENTICATED)).Methods("POST", "OPTIONS")
-	_router.HandleFunc("/download", security.WrapHandlerWithSpecialAuth(account.DownloadFile, configs.AUTH_AUTHENTICATED)).Methods("GET", "OPTIONS")
-	_router.HandleFunc("/encrypt", security.WrapHandlerWithSpecialAuth(account.PutEncryption, configs.AUTH_AUTHENTICATED)).Methods("PUT", "OPTIONS")
+	_router.HandleFunc("/upload", security.WrapHandlerWithSpecialAuth(file.Upload, configs.AUTH_AUTHENTICATED)).Methods("POST", "OPTIONS")
+	_router.HandleFunc("/download", security.WrapHandlerWithSpecialAuth(file.Download, configs.AUTH_AUTHENTICATED)).Methods("GET", "OPTIONS")
+	_router.HandleFunc("/encrypt", security.WrapHandlerWithSpecialAuth(file.PutEncryption, configs.AUTH_AUTHENTICATED)).Methods("PUT", "OPTIONS")
 
 	//token with correct register claim allowed
 	_router.HandleFunc("/account", security.WrapHandlerWithSpecialAuth(account.CreateUser, configs.AUTH_REGISTER)).Methods("PUT", "OPTIONS")
@@ -50,13 +51,11 @@ func SetupEndpoints() {
 
 	_router.HandleFunc("/log", displayLog).Methods("GET", "OPTIONS")
 
-	account.Init()
-
 	c := cors.New(cors.Options{
-		AllowedMethods: []string{"POST", "PUT", "GET", "PATCH"},
-		AllowedOrigins: []string{"*"},
-		AllowCredentials: true,
-		AllowedHeaders: []string{"g-recaptcha-response", "Authorization", "Content-Type","Origin","Accept", "Accept-Encoding", "Accept-Language", "Host", "Connection", "Referer", "Sec-Fetch-Mode", "User-Agent", "Access-Control-Request-Headers", "Access-Control-Request-Method"},
+		AllowedMethods:     []string{"POST", "PUT", "GET", "PATCH"},
+		AllowedOrigins:     []string{"*"},
+		AllowCredentials:   true,
+		AllowedHeaders:     []string{"g-recaptcha-response", "Authorization", "Content-Type", "Origin", "Accept", "Accept-Encoding", "Accept-Language", "Host", "Connection", "Referer", "Sec-Fetch-Mode", "User-Agent", "Access-Control-Request-Headers", "Access-Control-Request-Method"},
 		OptionsPassthrough: true,
 	})
 
@@ -65,13 +64,13 @@ func SetupEndpoints() {
 	log.Fatal(http.ListenAndServe(configs.PORT, handler))
 }
 
-func displayLog(w http.ResponseWriter, r *http.Request){
+func displayLog(w http.ResponseWriter, r *http.Request) {
 	b, err := ioutil.ReadFile(configs.LOG_PATH)
-	
+
 	if err != nil {
-			fmt.Println(err.Error()) //output to main
+		fmt.Println(err.Error()) //output to main
 		w.WriteHeader(http.StatusInternalServerError)
-	}else{
+	} else {
 		w.Write(b)
 	}
 }

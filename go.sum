@@ -19,10 +19,10 @@ github.com/streadway/amqp v0.0.0-20200108173154-1c71cc93ed71/go.mod h1:AZpEONHx3
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.5.1 h1:nOGnQDM7FYENwehXlg/kFVnos3rEvtKTjRvOWSzb6H4=
 github.com/stretchr/testify v1.5.1/go.mod h1:5W2xD1RspED5o8YsWQXVCued0rvSQ+mT+I5cxcmMvtA=
-gitlab.com/projectreferral/util v0.0.0-20200623155323-9cbd1696e645 h1:dKGiiXo54bmREHu0T5BrC5Feeb3TSo/QcBtlNvdBzQI=
-gitlab.com/projectreferral/util v0.0.0-20200623155323-9cbd1696e645/go.mod h1:LbAMpcNUKK40/kQh2W5k2IWcoBF985/CZjNVeDHkDKA=
-gitlab.com/projectreferral/util v0.0.0-20200705123435-ba79deeb46a2 h1:+TshaRMd05QFy2gR6ngG5hiHq8lsdMBF+nBFNFBfVlM=
-gitlab.com/projectreferral/util v0.0.0-20200705123435-ba79deeb46a2/go.mod h1:LbAMpcNUKK40/kQh2W5k2IWcoBF985/CZjNVeDHkDKA=
+gitlab.com/projectreferral/util v0.0.0-20201010182922-777e2bae226a h1:CVNn6X+2GOS9ZG1ez3nLZDhaRnMMN/6QONt2OyWEXb8=
+gitlab.com/projectreferral/util v0.0.0-20201010182922-777e2bae226a/go.mod h1:LbAMpcNUKK40/kQh2W5k2IWcoBF985/CZjNVeDHkDKA=
+gitlab.com/projectreferral/util v0.0.0-20201011125322-9a44df62fa94 h1:hoq09Vnx7WoB3AyqoI6TG5Sak1DurFlGFr+lx39r+aM=
+gitlab.com/projectreferral/util v0.0.0-20201011125322-9a44df62fa94/go.mod h1:LbAMpcNUKK40/kQh2W5k2IWcoBF985/CZjNVeDHkDKA=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/net v0.0.0-20200202094626-16171245cfb2 h1:CCH4IOTTfewWjGOlSp+zGcjutRKlBEZQ6wTn8ozI/nI=
 golang.org/x/net v0.0.0-20200202094626-16171245cfb2/go.mod h1:z5CRVTTTmAJ677TzLLGU+0bjPO0LkuOLi4/5GtJWs/s=

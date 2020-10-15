@@ -13,7 +13,7 @@ import (
 
 //methods that are implemented on util
 //and will be used
-type ConfigBuilder interface{
+type ConfigBuilder interface {
 	LoadEnvConfigs()
 	LoadDynamoDBConfigs() *dynamodb.Wrapper
 	LoadRabbitMQConfigs() *rabbit.DefaultQueueClient
@@ -50,7 +50,7 @@ func Inject(builder ConfigBuilder) {
 	})
 
 	//dependency injection to our resource
-	//we inject the rabbitmq client
+	//we inject the rabbitMQ client
 	rabbitMQClient := builder.LoadRabbitMQConfigs()
 	S3BucketClient := builder.LoadS3BucketConfigs()
 
@@ -59,27 +59,31 @@ func Inject(builder ConfigBuilder) {
 }
 
 //variable injected with the interface methods
-func LoadAccountRepo (r repo_builder.AccountBuilder){
+func LoadAccountRepo(r repo_builder.AccountBuilder) {
 	log.Println("Injecting Account repo")
 	repo_builder.Account = r
 }
+
 //variable injected with the interface methods
-func LoadAccountAdvertRepo (r repo_builder.AccountAdvertBuilder){
+func LoadAccountAdvertRepo(r repo_builder.AccountAdvertBuilder) {
 	log.Println("Injecting Account Advert Repo")
 	repo_builder.AccountAdvert = r
 }
+
 //variable injected with the interface methods
-func LoadSignInRepo (r repo_builder.SignInBuilder){
+func LoadSignInRepo(r repo_builder.SignInBuilder) {
 	log.Println("Injecting SignIn Repo")
 	repo_builder.SignIn = r
 }
 
-func LoadRabbitMQClient(c rabbit.QueueClient){
+func LoadRabbitMQClient(c rabbit.QueueClient) {
 	log.Println("Injecting RabbitMQ Client")
 	rabbitmq.Client = c
 }
 
 func LoadS3BucketClient(c utils3.Client) {
 	log.Println("Injecting S3 Bucket Client")
+	//injects the key and creates an instance of the s3 client
+	c.Init()
 	s3.C = c
 }

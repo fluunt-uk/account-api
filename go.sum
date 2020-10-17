@@ -23,6 +23,8 @@ gitlab.com/projectreferral/util v0.0.0-20201010182922-777e2bae226a h1:CVNn6X+2GO
 gitlab.com/projectreferral/util v0.0.0-20201010182922-777e2bae226a/go.mod h1:LbAMpcNUKK40/kQh2W5k2IWcoBF985/CZjNVeDHkDKA=
 gitlab.com/projectreferral/util v0.0.0-20201011125322-9a44df62fa94 h1:hoq09Vnx7WoB3AyqoI6TG5Sak1DurFlGFr+lx39r+aM=
 gitlab.com/projectreferral/util v0.0.0-20201011125322-9a44df62fa94/go.mod h1:LbAMpcNUKK40/kQh2W5k2IWcoBF985/CZjNVeDHkDKA=
+gitlab.com/projectreferral/util v0.0.0-20201017195558-999521703223 h1:bPv+eywDrRVD696mkLAieBWzIiO1nkMMjv5tu5lMjZw=
+gitlab.com/projectreferral/util v0.0.0-20201017195558-999521703223/go.mod h1:LbAMpcNUKK40/kQh2W5k2IWcoBF985/CZjNVeDHkDKA=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/net v0.0.0-20200202094626-16171245cfb2 h1:CCH4IOTTfewWjGOlSp+zGcjutRKlBEZQ6wTn8ozI/nI=
 golang.org/x/net v0.0.0-20200202094626-16171245cfb2/go.mod h1:z5CRVTTTmAJ677TzLLGU+0bjPO0LkuOLi4/5GtJWs/s=

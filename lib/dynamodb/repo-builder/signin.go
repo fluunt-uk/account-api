@@ -2,7 +2,7 @@ package repo_builder
 
 import (
 	"encoding/json"
-	"gitlab.com/projectreferral/account-api/internal"
+	is "gitlab.com/projectreferral/account-api/internal"
 	"gitlab.com/projectreferral/account-api/internal/models"
 	"gitlab.com/projectreferral/util/pkg/dynamodb"
 	"net/http"
@@ -41,10 +41,10 @@ func (c *SignInWrapper) Login(w http.ResponseWriter, r *http.Request) {
 	result, error := c.DC.GetItem(u.Email)
 
 	// if there is an error or record not found
-	if error != nil {
-		internal.HandleError(error, w)
+	if 	is.DynamoDbError(error, w) {
 		return
 	}
+
 	var cr models.Credentials
 
 	dynamodb.Unmarshal(result, &cr)
@@ -55,7 +55,7 @@ func (c *SignInWrapper) Login(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("subject", u.Email)
 		b, err := json.Marshal(u)
 
-		if !internal.HandleError(err, w) {
+		if !is.DynamoDbError(err, w) {
 
 			w.Write(b)
 			w.WriteHeader(http.StatusOK)

@@ -31,13 +31,13 @@ func (c *AccountAdvertWrapper) GetRefereeAdsPosted(w http.ResponseWriter, r *htt
 	email := security.GetClaimsOfJWT().Subject
 	result, err :=     c.DC.GetItem(email)
 
-	if !internal.HandleError(err, w) {
+	if !internal.DynamoDbError(err, w) {
 
 		dynamodb.Unmarshal(result, &u)
 
 		b, err := json.Marshal(u.AdsPosted)
 
-		if !internal.HandleError(err, w) {
+		if !internal.DynamoDbError(err, w) {
 
 			w.Write(b)
 			w.WriteHeader(http.StatusOK)
@@ -51,15 +51,15 @@ func (c *AccountAdvertWrapper) GetJobApplications(w http.ResponseWriter, r *http
 
 	//email parsed from the jwt
 	email := security.GetClaimsOfJWT().Subject
-	result, err :=     c.DC.GetItem(email)
+	result, err := c.DC.GetItem(email)
 
-	if !internal.HandleError(err, w) {
+	if !internal.DynamoDbError(err, w) {
 
 		dynamodb.Unmarshal(result, &u)
 
 		b, err := json.Marshal(u.Applications)
 
-		if !internal.HandleError(err, w) {
+		if !internal.DynamoDbError(err, w) {
 
 			w.Write(b)
 			w.WriteHeader(http.StatusOK)
@@ -73,11 +73,11 @@ func (c *AccountAdvertWrapper) GetAdApplicants(w http.ResponseWriter, r *http.Re
 	// Get ad details from when user clicks on show applicants
 	errDecode := dynamodb.DecodeToMap(r.Body, &ad)
 
-	if internal.HandleError(errDecode, w) {
+	if internal.DynamoDbError(errDecode, w) {
 
 		b, err := json.Marshal(ad.Applicants)
 
-		if !internal.HandleError(err, w) {
+		if !internal.DynamoDbError(err, w) {
 			w.Write(b)
 			w.WriteHeader(http.StatusOK)
 		}

@@ -81,7 +81,7 @@ func InjectRabbitMQClient(c rabbit.QueueClient) {
 
 func InjectS3BucketClient(c utils3.Client) {
 	log.Println("Injecting S3 Bucket Client")
-	//injects the key and creates an instance of the s3 client
+	//injects the key and creates an instance of the s3 session
 	c.Init()
 	s3.C = c
 }

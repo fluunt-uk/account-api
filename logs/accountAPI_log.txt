@@ -1,9 +1,9 @@
-2020/10/15 19:48:42 Environment: de1v
-2020/10/15 19:48:42 Running on :5001
-2020/10/15 19:48:42 Connecting to dynamo client
-2020/10/15 19:48:42 Injecting SignIn Repo
-2020/10/15 19:48:42 Injecting Account repo
-2020/10/15 19:48:42 Injecting Account Advert Repo
-2020/10/15 19:48:42 Injecting RabbitMQ Client
-2020/10/15 19:48:42 Injecting S3 Bucket Client
-2020/10/15 19:48:42 Session Initiated
+2020/10/17 21:08:16 Environment: de1v
+2020/10/17 21:08:16 Running on :5001
+2020/10/17 21:08:16 Connecting to dynamo client
+2020/10/17 21:08:16 Injecting SignIn Repo
+2020/10/17 21:08:16 Injecting Account repo
+2020/10/17 21:08:16 Injecting Account Advert Repo
+2020/10/17 21:08:16 Injecting RabbitMQ Client
+2020/10/17 21:08:16 Injecting S3 Bucket Client
+2020/10/17 21:08:16 Session Initiated

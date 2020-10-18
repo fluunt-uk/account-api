@@ -18,7 +18,7 @@ const (
 	//QAPI_URL = "http://35.179.11.178:5004"
 	QAPI_URL = "http://localhost:5004"
 	/*********************************************/
-	/*********** Authentication configs **********/
+	/*********** Authentication(token permissions) configs **********/
 	AUTH_REGISTER      = "register_user"
 	AUTH_AUTHENTICATED = "crud"
 	AUTH_LOGIN         = "signin_user"
@@ -28,11 +28,10 @@ const (
 	/*************** S3 configs ******************/
 	S3_BUCKET		   = "docs-s3"
 	S3_ENCRYPTION_ALGORITHM    = "AES256"
-	S3_KEY                     = "S3_KEY"
 	PART_SIZE                  = 10 * 1024 * 1024
-	S3_DOWNLOAD_LOCATION       = "../"
+	S3_DOWNLOAD_LOCATION       = "../cache/"
 	/*****************************************************************/
-	/*************************** S3 configs **************************/
+	/*************************** Google Recaptcha(I am not a Robot) configs **************************/
 	RECAPTCHA_VERIFY = "https://www.google.com/recaptcha/api/siteverify"
 	RECAPTCHA_SECRET = "6LcbrKIZAAAAACoS7IHx5KZfhkk3T1tXBhcIGf6W"
 	/*****************************************************************/
@@ -41,5 +40,4 @@ const (
 var (
 	//To dial RabbitMQ
 	BrokerUrl = ""
-	Env = ""
 )

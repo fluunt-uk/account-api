@@ -17,22 +17,23 @@ func main() {
 		log.Fatal(err)
 	}
 	defer f.Close()
-	log.SetOutput(f)
+	//log all to the file, disabled for local debugging
+	if os.Getenv("ENV") == "prod" {log.SetOutput(f)}
 
 	//gets all the necessary configs into our object
 	//completes connections
 	//assigns connections to repos
 	dep.Inject(&util.ServiceConfigs{
-		Environment: os.Getenv("ENV"),
-		Region:       configs.EU_WEST_2,
-		Table:        configs.TABLE_NAME,
-		SearchParam:  configs.UNIQUE_IDENTIFIER,
-		GenericModel: models.User{},
-		BrokerUrl:    configs.QAPI_URL,
-		Port:		  configs.PORT,
-		S3Config:     &docbucket.S3Configs{
+		Environment:	os.Getenv("ENV"),
+		Region:       	configs.EU_WEST_2,
+		Table:        	configs.TABLE_NAME,
+		SearchParam:  	configs.UNIQUE_IDENTIFIER,
+		GenericModel: 	models.User{},
+		BrokerUrl:    	configs.QAPI_URL,
+		Port:		  	configs.PORT,
+		S3Config:     	&docbucket.S3Configs{
 			Region:              configs.EU_WEST_2,
-			Key:                 os.Getenv(configs.S3_KEY),
+			Key:                 os.Getenv("S3_KEY"),
 			DownloadLocation:    configs.S3_DOWNLOAD_LOCATION,
 			Bucket:              configs.S3_BUCKET,
 			EncryptionAlgorithm: configs.S3_ENCRYPTION_ALGORITHM,

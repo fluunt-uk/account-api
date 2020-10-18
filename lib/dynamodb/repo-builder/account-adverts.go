@@ -51,7 +51,7 @@ func (c *AccountAdvertWrapper) GetJobApplications(w http.ResponseWriter, r *http
 
 	//email parsed from the jwt
 	email := security.GetClaimsOfJWT().Subject
-	result, err :=     c.DC.GetItem(email)
+	result, err := c.DC.GetItem(email)
 
 	if !internal.HandleError(err, w) {
 

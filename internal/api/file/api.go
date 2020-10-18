@@ -14,11 +14,16 @@ var Param = "file"
 func Upload(w http.ResponseWriter, r *http.Request) {
 	result, err := s3.UploadFile(r, Param)
 
-	if err != nil || result == nil {
-		if err != nil {
-			log.Println([]byte(err.Error()))
-		}
-		w.WriteHeader(http.StatusBadRequest)
+	if err != nil {
+		log.Println([]byte(err.Error()))
+		http.Error(w, err.Error(), 400)
+		return
+	}
+
+	if result == nil {
+		s := "Upload file failed : [Result returned Nil]"
+		log.Println(s)
+		http.Error(w, s, 400)
 		return
 	}
 
@@ -34,17 +39,21 @@ func Download(w http.ResponseWriter, r *http.Request) {
 	}
 
 	file, err := s3.DownloadFile(values[0])
-	if err != nil || file == nil {
-		if err != nil {
-			log.Println([]byte(err.Error()))
-		}
-		w.WriteHeader(http.StatusBadRequest)
+
+	if err != nil {
+		log.Println([]byte(err.Error()))
+		http.Error(w, err.Error(), 400)
 		return
 	}
 
-	s, _ := file.Stat()
+	if file == nil {
+		s := "Download file failed : [File returned Nil]"
+		log.Println(s)
+		http.Error(w, s, 400)
+		return
+	}
 
-	log.Printf("file: %+v", s)
+	log.Printf("file: %+v", file.Name())
 	w.WriteHeader(http.StatusCreated)
 }
 

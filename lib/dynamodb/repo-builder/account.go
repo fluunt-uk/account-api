@@ -62,10 +62,10 @@ func (c *AccountWrapper) CreateUser(w http.ResponseWriter, r *http.Request) {
 	dynamodb.AddEmptyCollection(dynamoAttr, configs.APPLICATIONS)
 	modifySAtrrValue(dynamoAttr, "id", &sha1Hash)
 
-	if !internal.HandleError(errDecode, w) {
+	if !internal.DynamoDbError(errDecode, w) {
 		err := c.DC.CreateItem(dynamoAttr)
 
-		if !internal.HandleError(err, w) {
+		if !internal.DynamoDbError(err, w) {
 
 			b, err := json.Marshal(u)
 			if err != nil {
@@ -90,11 +90,11 @@ func (c *AccountWrapper) GetUser(w http.ResponseWriter, r *http.Request) {
 	email := security.GetClaimsOfJWT().Subject
 	result, err := c.DC.GetItem(email)
 
-	if !internal.HandleError(err, w) {
+	if !internal.DynamoDbError(err, w) {
 		dynamodb.Unmarshal(result, &u)
 		b, err := json.Marshal(&u)
 
-		if !internal.HandleError(err, w) {
+		if !internal.DynamoDbError(err, w) {
 
 			w.Write(b)
 			w.WriteHeader(http.StatusOK)
@@ -131,7 +131,7 @@ func (c *AccountWrapper) IsUserPremium(w http.ResponseWriter, r *http.Request) {
 
 	p := result.Item[configs.PREMIUM].BOOL
 
-	if !internal.HandleError(err, w) && *p {
+	if !internal.DynamoDbError(err, w) && *p {
 		w.WriteHeader(http.StatusOK)
 		return
 	}
@@ -168,7 +168,7 @@ func (c *AccountWrapper) VerifyEmail(w http.ResponseWriter, r *http.Request) {
 		email := security.GetClaimsOfJWT().Subject
 		result, err := c.DC.GetItem("lunos4@gmail.com")
 
-		if !internal.HandleError(err, w) {
+		if !internal.DynamoDbError(err, w) {
 			if accessCodeValue == *result.Item["access_code"].S {
 
 				c.UpdateValue(email, &models.ChangeRequest{Field: "verified", NewBool: true, Type: 3})
@@ -194,12 +194,12 @@ func (c *AccountWrapper) ResendVerification(w http.ResponseWriter, r *http.Reque
 
 	user, err := c.DC.GetItem("lunos4@gmail.com")
 
-	if !internal.HandleError(err, w) {
+	if !internal.DynamoDbError(err, w) {
 
 		dynamodb.Unmarshal(user, &u)
 		b, errM := json.Marshal(&u)
 
-		if !internal.HandleError(errM, w) {
+		if !internal.DynamoDbError(errM, w) {
 
 			w.Write(b)
 			w.WriteHeader(http.StatusOK)

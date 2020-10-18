@@ -2,7 +2,7 @@ package file
 
 import (
 	"encoding/json"
-	"gitlab.com/projectreferral/account-api/internal"
+	is "gitlab.com/projectreferral/account-api/internal"
 	"gitlab.com/projectreferral/account-api/internal/models"
 	"gitlab.com/projectreferral/account-api/lib/s3"
 	"log"
@@ -14,11 +14,7 @@ var Param = "file"
 func Upload(w http.ResponseWriter, r *http.Request) {
 	result, err := s3.UploadFile(r, Param)
 
-	if err != nil {
-		log.Println([]byte(err.Error()))
-		http.Error(w, err.Error(), 400)
-		return
-	}
+	is.AWSError(err, w)
 
 	if result == nil {
 		s := "Upload file failed : [Result returned Nil]"
@@ -40,9 +36,7 @@ func Download(w http.ResponseWriter, r *http.Request) {
 
 	file, err := s3.DownloadFile(values[0])
 
-	if err != nil {
-		log.Println([]byte(err.Error()))
-		http.Error(w, err.Error(), 400)
+	if is.AWSError(err, w) {
 		return
 	}
 
@@ -60,7 +54,7 @@ func Download(w http.ResponseWriter, r *http.Request) {
 func PutEncryption(w http.ResponseWriter, r *http.Request) {
 	sSEncryption := models.SSEncryption{}
 	err := json.NewDecoder(r.Body).Decode(&sSEncryption)
-	if !internal.HandleError(err, w) {
+	if !is.DefaultError(err, w) {
 		result, err := s3.PutEncryption(sSEncryption.Key)
 		if err != nil || result == nil {
 			w.WriteHeader(http.StatusBadRequest)

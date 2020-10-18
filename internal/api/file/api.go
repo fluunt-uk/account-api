@@ -14,7 +14,9 @@ var Param = "file"
 func Upload(w http.ResponseWriter, r *http.Request) {
 	result, err := s3.UploadFile(r, Param)
 
-	is.AWSError(err, w)
+	if is.AWSError(err, w) {
+		return
+	}
 
 	if result == nil {
 		s := "Upload file failed : [Result returned Nil]"

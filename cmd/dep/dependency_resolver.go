@@ -10,6 +10,7 @@ import (
 	"log"
 )
 
+
 //methods that are implemented on util
 //and will be used
 type ConfigBuilder interface {
